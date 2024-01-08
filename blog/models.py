@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 
 # Create your models here.
@@ -30,6 +31,13 @@ class Post(models.Model):
                               default='draft')
     objects = models.Manager() # o gerenciador default
     published = PublishedManager() # nosso gerenciador personalizado
+
+    def get_ablolute_url(self):
+        return reverse('blog:post_detail',
+                       args=[self.publish.year,
+                             self.publish.month,
+                             self.publish.day,
+                             self.slug])
     
     class Meta:
         ordering = ('-publish',)
