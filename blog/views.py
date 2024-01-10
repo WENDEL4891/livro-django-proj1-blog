@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404, render
+from django.utils import timezone
 
 from .models import Post
 
@@ -15,7 +16,7 @@ def post_detail(request, year, month, day, post):
                              status='published',
                              publish__year=year,
                              publish__month=month,
-                             publish__day=day)
-    return (request,
+                             publish__day=day)    
+    return render(request,
             'blog/post/detail.html',
             {'post': post})

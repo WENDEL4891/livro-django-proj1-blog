@@ -32,11 +32,14 @@ class Post(models.Model):
     objects = models.Manager() # o gerenciador default
     published = PublishedManager() # nosso gerenciador personalizado
 
-    def get_ablolute_url(self):
+    def get_absolute_url(self):        
+
+        local_time_publish = timezone.localtime(self.publish)
+
         return reverse('blog:post_detail',
-                       args=[self.publish.year,
-                             self.publish.month,
-                             self.publish.day,
+                       args=[local_time_publish.year,
+                             local_time_publish.month,
+                             local_time_publish.day,
                              self.slug])
     
     class Meta:
