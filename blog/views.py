@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from django.views.generic import ListView
 
+from .forms import EmailPostForm
 from .models import Post
 
 # Create your views here.
@@ -39,3 +40,19 @@ class PostListView(ListView):
     context_object_name = 'posts'
     paginate_by = 3
     template_name = 'blog/post/list.html'
+
+def post_share(request, post_id):
+    # Obtém a postaem com base no id
+    post = get_object_or_404(Post, id=post_id, status='published')
+
+    if request.method == 'POST':
+        # Formulário foi submetido
+        form = EmailPostForm(request.POST)
+        if form.is_valid():
+            # Campos do formulário passaram pela validação
+            cd = form.cleaned_data
+            # envia o email
+    else:
+        form = EmailPostForm()
+    return render(request, 'blog/post/share.html', {'post':post,
+                                                        'form':form})
