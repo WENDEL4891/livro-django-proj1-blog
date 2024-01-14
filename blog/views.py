@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from django.views.generic import ListView
 
-from .forms import EmailPostForm
+from .forms import CommentForm, EmailPostForm
 from .models import Post
 
 # Create your views here.
@@ -31,10 +31,28 @@ def post_detail(request, year, month, day, post):
                              status='published',
                              publish__year=year,
                              publish__month=month,
-                             publish__day=day)    
+                             publish__day=day)
+    comments = post.comments.filter(active=True)
+    new_comment = None
+    if request.method == 'POST':
+        # Um comentário foi postado
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+            # Cria o objeto Comment, mas não
+            # o salva ainda no banco de dados
+            new_comment = comment_form.save(commit=False)
+            # Atribui a postagem atual ao commentário
+            new_comment.post = post
+            # Salva o comentário no banco de dados
+            new_comment.save()
+    else:
+        comment_form = CommentForm()
     return render(request,
             'blog/post/detail.html',
-            {'post': post})
+            {'post':post,
+             'comments':comments,
+             'new_comment':new_comment,
+             'comment_form':comment_form})
 
 class PostListView(ListView):
     queryset = Post.published.all()
