@@ -128,7 +128,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_HOST_USER = 'wendel4891@gmail.com'
-# EMAIL_HOST_PASSWORD = 'ILBE LTZQ UDTJ BMBP'
+# EMAIL_HOST_PASSWORD = ''
 # EMAIL_PORT = 587
 # EMAIL_USE_TSL = True
 
